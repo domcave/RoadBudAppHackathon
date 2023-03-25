@@ -10,8 +10,8 @@ public class Oil {
     public Oil(){
         brand = "";
         type = "";
-        wearMax = 0;
-        miles = 0;
+        wearMax = -1;
+        miles = -1;
     }
     public Oil(String brand, String type, int wearMax, int miles){
         this.brand = brand;

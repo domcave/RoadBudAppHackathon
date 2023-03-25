@@ -12,8 +12,8 @@ public class Tire{
         manufacturer = "";
         model = "";
         type = "";
-        wearMax = 0;
-        miles = 0;
+        wearMax = -1;
+        miles = -1;
     }
     public Tire(String manufacturer, String model, String type, int wearMax, int miles){
         this.manufacturer = manufacturer;
