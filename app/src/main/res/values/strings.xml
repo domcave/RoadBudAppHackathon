@@ -3,6 +3,10 @@
     <string name="select">Select Car Year</string>
     <string name="select2">Select Car Make</string>
     <string name="select3">Select Car Model</string>
+    <string name="select4">Select Tire Type</string>
+    <string name="select5">Select Oil Type</string>
+
+
 
 
 </resources>

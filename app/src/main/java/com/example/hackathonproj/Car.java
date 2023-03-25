@@ -5,8 +5,8 @@ public class Car {
     private String make;
     private String model;
     private int year;
-    private Tire tires;
-    private Oil oil;
+    private String tires;
+    private String oil;
     private Gas gas;
     private double mpg;
     private int miles;
@@ -15,22 +15,22 @@ public class Car {
     public Car(){
         make = "";
         model = "";
-        tires = new Tire();
+        tires = "";
         miles = -1;
-        oil = new Oil();
+        oil = "";
         gas = new Gas();
         mpg = -1.0;
         year = -1;
 
     }
-    public Car(String make, String model, Tire tires, int miles, Oil oil, Gas gas, double mpg, int year){
+    public Car(String make, String model, String tires, int miles, String oil, int year){
         this.make = make;
         this.model = model;
         this.tires = tires;
         this.miles = miles;
         this.oil = oil;
-        this.gas = gas;
-        this.mpg = mpg;
+        this.gas = null;
+        this.mpg = -1.0;
         this.year = year;
 
     }
@@ -51,11 +51,11 @@ public class Car {
         this.model = model;
     }
 
-    public Tire getTires() {
+    public String getTires() {
         return tires;
     }
 
-    public void setTires(Tire tires) {
+    public void setTires(String tires) {
         this.tires = tires;
     }
 
@@ -67,11 +67,11 @@ public class Car {
         this.miles = miles;
     }
 
-    public Oil getOil() {
+    public String getOil() {
         return oil;
     }
 
-    public void setOil(Oil oil) {
+    public void setOil(String oil) {
         this.oil = oil;
     }
 
