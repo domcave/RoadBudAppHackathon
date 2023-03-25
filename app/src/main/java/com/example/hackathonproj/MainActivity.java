@@ -30,15 +30,23 @@ public class MainActivity extends AppCompatActivity {
     "Mazda", "Mercedes-Benz", "Mitsubishi", "Nissan", "Pontiac",
             "Subaru", "Toyota", "Volkswagen", "Volvo"};
     String[] models = {};
+    String[] oilTypes = {"Conventional", "Synthetic Blend", "Full Synthetic", "Monograde"};
+    String[] tireTypes = {"Touring", "Performance", "All-Terrain", "Winter/Snow", "Track/Competition", "Other"};
     AutoCompleteTextView autoCompleteTextView1;
     ArrayAdapter<String> adapterItems1;
     AutoCompleteTextView autoCompleteTextView2;
     ArrayAdapter<String> adapterItems2;
     AutoCompleteTextView autoCompleteTextView3;
     ArrayAdapter<String> adapterItems3;
+    AutoCompleteTextView autoCompleteTextView4;
+    ArrayAdapter<String> adapterItems4;
+    AutoCompleteTextView autoCompleteTextView5;
+    ArrayAdapter<String> adapterItems5;
     private Button modelsButton;
     String[] make = {"None"};
     int[] year = {1991};
+    String[] model = {};
+    Car userCar = new Car();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String item = adapterView.getItemAtPosition(i).toString();
-                    year[0] = Integer.parseInt(item);
+                    userCar.setYear(Integer.parseInt(item));
 
                 }
             });
@@ -68,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String item = adapterView.getItemAtPosition(i).toString();
-                    make[0] = item;
+                    userCar.setMake(item);
+
 
                 }
             });
@@ -80,9 +89,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
+                userCar.setModel(item);
 
             }
         });
+
+
 
 
 
@@ -98,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         ArrayList<String> carModels = new ArrayList<String>();
-        int carYear = year[0];
+        int carYear = userCar.getYear();
         InputStream carFile = getResources().openRawResource(R.raw.a1992);
 
         switch(carYear){
@@ -207,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 new InputStreamReader(carFile, Charset.forName("UTF-8"))
         );
 
-        String carMake = make[0];
+        String carMake = userCar.getMake();
         fileScan.readLine();
 
         Scanner lineScan = null;
@@ -234,6 +246,30 @@ public class MainActivity extends AppCompatActivity {
         autoCompleteTextView3 = findViewById(R.id.auto_complete_txt3);
         adapterItems3 = new ArrayAdapter<String>(this, R.layout.list_years, models);
         autoCompleteTextView3.setAdapter(adapterItems3);
+    }
+
+    public void mainNext(View view){
+        setContentView(R.layout.find_car2);
+        autoCompleteTextView4 = findViewById(R.id.auto_complete_txt4);
+        adapterItems4 = new ArrayAdapter<String>(this, R.layout.list_years, tireTypes);
+        autoCompleteTextView4.setAdapter(adapterItems4);
+        autoCompleteTextView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getItemAtPosition(i).toString();
+                userCar.setTires(item);
+            }
+        });
+        autoCompleteTextView5 = findViewById(R.id.auto_complete_txt5);
+        adapterItems5 = new ArrayAdapter<String>(this, R.layout.list_years, oilTypes);
+        autoCompleteTextView5.setAdapter(adapterItems5);
+        autoCompleteTextView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String item = adapterView.getItemAtPosition(i).toString();
+                userCar.setOil(item);
+            }
+        });
     }
 
 }
