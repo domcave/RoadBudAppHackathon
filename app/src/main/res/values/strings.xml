@@ -2,5 +2,7 @@
     <string name="app_name">HackathonProj</string>
     <string name="select">Select Car Year</string>
     <string name="select2">Select Car Make</string>
+    <string name="select3">Select Car Model</string>
+
 
 </resources>
