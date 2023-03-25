@@ -1,5 +1,7 @@
 package com.example.hackathonproj;
 import java.io.*;
+import java.nio.Buffer;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.net.*;
 
@@ -11,7 +13,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -19,15 +25,20 @@ public class MainActivity extends AppCompatActivity {
     String[] years = {"1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003",
     "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017",
     "2018", "2019", "2020", "2021", "2022", "2023", "2024"};
-    String[] makes = {"Acura", "Alfa Romeo", "Audi", "BMW", "Buick", "Cadillac", "Chevrolet", "Chrysler",
-            "Dodge", "Ferrari", "Ford", "GMC", "Honda", "Hyundai", "Infinity", "Jeep", "Lexus", "Lincoln",
-    "Mazda", "Mercedes-Benz", "Mercury", "Mitsubishi", "Nissan", "Pontiac",
-            "Subaru", "Tesla", "Toyota", "Volkswagon", "Volvo"};
-    String[] models;
+    String[] makes = {"Acura", "Audi", "BMW", "Buick", "Cadillac", "Chevrolet", "Chrysler",
+            "Dodge", "Ferrari", "Ford", "GMC", "Honda", "Hyundai", "Jeep", "Lexus", "Lincoln",
+    "Mazda", "Mercedes-Benz", "Mitsubishi", "Nissan", "Pontiac",
+            "Subaru", "Toyota", "Volkswagen", "Volvo"};
+    String[] models = {};
     AutoCompleteTextView autoCompleteTextView1;
     ArrayAdapter<String> adapterItems1;
     AutoCompleteTextView autoCompleteTextView2;
     ArrayAdapter<String> adapterItems2;
+    AutoCompleteTextView autoCompleteTextView3;
+    ArrayAdapter<String> adapterItems3;
+    private Button modelsButton;
+    String[] make = {"None"};
+    int[] year = {1991};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,144 +47,193 @@ public class MainActivity extends AppCompatActivity {
         autoCompleteTextView1 = findViewById(R.id.auto_complete_txt1);
         adapterItems1 = new ArrayAdapter<String>(this, R.layout.list_years, years);
         autoCompleteTextView1.setAdapter(adapterItems1);
-        autoCompleteTextView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(MainActivity.this,"Item: " + item, Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
         autoCompleteTextView2 = findViewById(R.id.auto_complete_txt2);
         adapterItems2 = new ArrayAdapter<String>(this, R.layout.list_years, makes);
         autoCompleteTextView2.setAdapter(adapterItems2);
-        autoCompleteTextView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+
+            autoCompleteTextView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    String item = adapterView.getItemAtPosition(i).toString();
+                    year[0] = Integer.parseInt(item);
+
+                }
+            });
+
+            autoCompleteTextView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    String item = adapterView.getItemAtPosition(i).toString();
+                    make[0] = item;
+
+                }
+            });
+
+        autoCompleteTextView3 = findViewById(R.id.auto_complete_txt3);
+        adapterItems3 = new ArrayAdapter<String>(this, R.layout.list_years, models);
+        autoCompleteTextView3.setAdapter(adapterItems3);
+        autoCompleteTextView3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(MainActivity.this,"Item: " + item, Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
+
+
+
+
     }
 
-    //this method handles the whole process of searching for and choosing your car
-    private Car getCar() throws IOException{
-        String[] carInfo = new String[6];
-        int carYear = 0;
+    //this method handles getting matching car models
+    public void getModels(View view) throws IOException{
 
 
 
-        carInfo[0] = "" + carYear;
-        URL url = null;
+
+        ArrayList<String> carModels = new ArrayList<String>();
+        int carYear = year[0];
+        InputStream carFile = getResources().openRawResource(R.raw.a1992);
+
         switch(carYear){
             case 1992:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1992.csv");
+                carFile = getResources().openRawResource(R.raw.a1992);
                 break;
             case 1993:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1993.csv");
+                carFile = getResources().openRawResource(R.raw.a1993);
                 break;
             case 1994:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1994.csv");
+                carFile = getResources().openRawResource(R.raw.a1994);
                 break;
             case 1995:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1995.csv");
+                carFile = getResources().openRawResource(R.raw.a1995);
                 break;
             case 1996:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1996.csv");
+                carFile = getResources().openRawResource(R.raw.a1996);
                 break;
             case 1997:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1997.csv");
+                carFile = getResources().openRawResource(R.raw.a1997);
                 break;
             case 1998:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1998.csv");
+                carFile = getResources().openRawResource(R.raw.a1998);
                 break;
             case 1999:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1999.csv");
+                carFile = getResources().openRawResource(R.raw.a1999);
                 break;
             case 2000:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2000.csv");
+                carFile = getResources().openRawResource(R.raw.a2000);
                 break;
             case 2001:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2001.csv");
+                carFile = getResources().openRawResource(R.raw.a2001);
                 break;
             case 2002:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/1993.csv");
+                carFile = getResources().openRawResource(R.raw.a2002);
                 break;
             case 2003:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2003.csv");
+                carFile = getResources().openRawResource(R.raw.a2003);
                 break;
             case 2004:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2004.csv");
+                carFile = getResources().openRawResource(R.raw.a2004);
                 break;
             case 2005:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2005.csv");
+                carFile =getResources().openRawResource(R.raw.a2005);
                 break;
             case 2006:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2006.csv");
+                carFile = getResources().openRawResource(R.raw.a2006);
                 break;
             case 2007:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2007.csv");
+                carFile = getResources().openRawResource(R.raw.a2007);
                 break;
             case 2008:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2008.csv");
+                carFile = getResources().openRawResource(R.raw.a2008);
                 break;
             case 2009:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2009.csv");
+                carFile = getResources().openRawResource(R.raw.a2009);
                 break;
             case 2010:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2010.csv");
+                carFile = getResources().openRawResource(R.raw.a2010);
                 break;
             case 2011:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2011.csv");
+                carFile = getResources().openRawResource(R.raw.a2011);
                 break;
             case 2012:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2012.csv");
+                carFile = getResources().openRawResource(R.raw.a2012);
                 break;
             case 2013:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2013.csv");
+                carFile = getResources().openRawResource(R.raw.a2013);
                 break;
             case 2014:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2014.csv");
+                carFile = getResources().openRawResource(R.raw.a2014);
                 break;
             case 2015:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2015.csv");
+                carFile = getResources().openRawResource(R.raw.a2015);
                 break;
             case 2016:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2016.csv");
+                carFile = getResources().openRawResource(R.raw.a2016);
                 break;
             case 2017:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2017.csv");
+                carFile = getResources().openRawResource(R.raw.a2017);
                 break;
             case 2018:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2018.csv");
+                carFile = getResources().openRawResource(R.raw.a2018);
                 break;
             case 2019:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2019.csv");
+                carFile = getResources().openRawResource(R.raw.a2019);
                 break;
             case 2020:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2020.csv");
+                carFile = getResources().openRawResource(R.raw.a2020);
                 break;
             case 2021:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2021.csv");
+                carFile = getResources().openRawResource(R.raw.a2021);
                 break;
             case 2022:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2022.csv");
+                carFile = getResources().openRawResource(R.raw.a2022);
                 break;
             case 2023:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2023.csv");
+                carFile = getResources().openRawResource(R.raw.a2023);
                 break;
             case 2024:
-                url = new URL("https://raw.githubusercontent.com/abhionlyone/us-car-models-data/master/2024.csv");
+                carFile = getResources().openRawResource(R.raw.a2024);
                 break;
 
         }
-        Scanner scan = new Scanner(url.openStream());
-        scan.useDelimiter(",");
+        BufferedReader fileScan = new BufferedReader(
+                new InputStreamReader(carFile, Charset.forName("UTF-8"))
+        );
 
-        String carMake = "";
+        String carMake = make[0];
+        fileScan.readLine();
+
+        Scanner lineScan = null;
+        String line;
+        line = fileScan.readLine();
+
+        while((line = fileScan.readLine()) != null){
+
+            lineScan = new Scanner(line);
+            if(line.contains(carMake)){
+                String[] tokens = line.split(",");
+                carModels.add(tokens[2]);
+            }
+        }
+        if(lineScan != null) {
+            lineScan.close();
+        }
 
 
-
-        scan.close();
-        return new Car();
+        fileScan.close();
+        String[] temp = new String[carModels.size()];
+        temp = carModels.toArray(temp);
+        models = temp;
+        autoCompleteTextView3 = findViewById(R.id.auto_complete_txt3);
+        adapterItems3 = new ArrayAdapter<String>(this, R.layout.list_years, models);
+        autoCompleteTextView3.setAdapter(adapterItems3);
     }
+
 }
