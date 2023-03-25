@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     String[] make = {"None"};
     int[] year = {1991};
     String[] model = {};
+    TextView textView;
+    EditText inputText;
     Car userCar = new Car();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,13 +266,21 @@ public class MainActivity extends AppCompatActivity {
         autoCompleteTextView5 = findViewById(R.id.auto_complete_txt5);
         adapterItems5 = new ArrayAdapter<String>(this, R.layout.list_years, oilTypes);
         autoCompleteTextView5.setAdapter(adapterItems5);
-        autoCompleteTextView4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        autoCompleteTextView5.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
                 userCar.setOil(item);
             }
         });
+
+        textView = (TextView) findViewById(R.id.textView2);
+        inputText = (EditText) findViewById(R.id.editMiles);
+    }
+
+    public void goToDash(View view){
+        userCar.setMiles(Integer.parseInt(String.valueOf(inputText.getText())));
+
     }
 
 }
